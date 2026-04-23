@@ -29,10 +29,15 @@ const utmFields = {
   utm_content: document.getElementById('utm-content'),
 };
 
+const DEFAULT_DECODE_LABEL = (decodeBtn?.textContent || 'Continue').trim();
+const DEFAULT_SUBMIT_LABEL = (submitBtn?.textContent || 'Request my offer').trim();
+
 let decodedVehicle = null;
 
 const setStatus = (element, message, state = '') => {
+  if (!element) return;
   element.textContent = message;
+
   if (state) {
     element.setAttribute('data-state', state);
   } else {
@@ -40,33 +45,94 @@ const setStatus = (element, message, state = '') => {
   }
 };
 
-const normalizeVin = (value) => value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+const setButtonState = (button, isLoading, loadingLabel, defaultLabel) => {
+  if (!button) return;
+  button.disabled = isLoading;
+  button.textContent = isLoading ? loadingLabel : defaultLabel;
+};
+
+const normalizeVin = (value = '') => String(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
 const isValidVin = (vin) => /^[A-HJ-NPR-Z0-9]{17}$/.test(vin);
+const digitsOnly = (value = '') => String(value).replace(/\D/g, '');
+
+const readJsonSafely = async (response) => {
+  try {
+    return await response.json();
+  } catch {
+    return {};
+  }
+};
 
 const populateUtmFields = () => {
   const params = new URLSearchParams(window.location.search);
+
   Object.entries(utmFields).forEach(([key, input]) => {
+    if (!input) return;
     input.value = params.get(key) || '';
   });
 };
 
-const renderSummary = (vehicle) => {
-  decodeSummary.innerHTML = '';
+const clearDecodedHiddenFields = () => {
+  decodedMakeHidden.value = '';
+  decodedModelHidden.value = '';
+  decodedYearHidden.value = '';
+  decodedBodyHidden.value = '';
+  decodedTypeHidden.value = '';
+};
 
-  const values = [
-    vehicle.make,
-    vehicle.model,
-    vehicle.modelYear,
+const toggleManualFields = (show) => {
+  manualNote.classList.toggle('is-hidden', !show);
+  manualMakeWrap.classList.toggle('is-hidden', !show);
+  manualModelWrap.classList.toggle('is-hidden', !show);
+  manualMakeInput.required = show;
+  manualModelInput.required = show;
+};
+
+const hideLeadFlow = () => {
+  vehicleCard.classList.add('is-hidden');
+  leadCard.classList.add('is-hidden');
+};
+
+const resetDecodedState = () => {
+  decodedVehicle = null;
+  clearDecodedHiddenFields();
+  decodeSummary.innerHTML = '';
+  toggleManualFields(false);
+  setStatus(leadStatus, '');
+};
+
+const buildSummaryValues = (vehicle = {}) => {
+  const primaryTitle = [vehicle.modelYear, vehicle.make, vehicle.model].filter(Boolean).join(' ');
+  const trimLine = [vehicle.series, vehicle.trim].filter(Boolean).join(' ').trim();
+  const engineLine = [
+    vehicle.engineCylinders ? `${vehicle.engineCylinders} cyl` : '',
+    vehicle.displacementL ? `${vehicle.displacementL}L` : '',
+  ]
+    .filter(Boolean)
+    .join(' • ');
+
+  return [
+    primaryTitle,
+    trimLine,
     vehicle.bodyClass,
     vehicle.vehicleType,
-    vehicle.engineCylinders ? `${vehicle.engineCylinders} cyl` : '',
+    vehicle.driveType,
+    vehicle.transmissionStyle,
+    engineLine,
     vehicle.fuelTypePrimary,
+    vehicle.manufacturer,
   ].filter(Boolean);
+};
+
+const renderSummary = (vehicle = {}) => {
+  decodeSummary.innerHTML = '';
+
+  const values = buildSummaryValues(vehicle);
 
   if (!values.length) {
     const fallback = document.createElement('p');
     fallback.className = 'helper-text';
-    fallback.textContent = 'VIN captured. Continue with the form below.';
+    fallback.textContent = 'Your VIN is saved. Add the vehicle details below to continue.';
     decodeSummary.appendChild(fallback);
     return;
   }
@@ -79,148 +145,199 @@ const renderSummary = (vehicle) => {
   });
 };
 
-const toggleManualFields = (show) => {
-  manualNote.classList.toggle('is-hidden', !show);
-  manualMakeWrap.classList.toggle('is-hidden', !show);
-  manualModelWrap.classList.toggle('is-hidden', !show);
-  manualMakeInput.required = show;
-  manualModelInput.required = show;
-};
+const validateLeadPayload = (payload) => {
+  const requiredFields = [
+    ['fullName', 'Please enter your full name.'],
+    ['mobile', 'Please enter your mobile number.'],
+    ['email', 'Please enter your email address.'],
+    ['zip', 'Please enter your ZIP code.'],
+    ['miles', 'Please enter the vehicle mileage.'],
+  ];
 
-vinInput.addEventListener('input', () => {
-  vinInput.value = normalizeVin(vinInput.value);
-});
-
-vinForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-
-  const vin = normalizeVin(vinInput.value);
-  vinInput.value = vin;
-  vinHidden.value = vin;
-
-  if (!isValidVin(vin)) {
-    setStatus(vinStatus, 'Enter a valid 17-character VIN. VINs do not use I, O, or Q.', 'error');
-    return;
-  }
-
-  decodeBtn.disabled = true;
-  setStatus(vinStatus, 'Decoding VIN…');
-
-  try {
-    const response = await fetch('/api/decode-vin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ vin }),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || 'Could not decode VIN.');
+  for (const [field, message] of requiredFields) {
+    if (!String(payload[field] || '').trim()) {
+      return message;
     }
-
-    decodedVehicle = result.vehicle;
-
-    decodedMakeHidden.value = decodedVehicle.make || '';
-    decodedModelHidden.value = decodedVehicle.model || '';
-    decodedYearHidden.value = decodedVehicle.modelYear || '';
-    decodedBodyHidden.value = decodedVehicle.bodyClass || '';
-    decodedTypeHidden.value = decodedVehicle.vehicleType || '';
-
-    renderSummary(decodedVehicle);
-
-    const decodedEnough = Boolean(decodedVehicle.make && decodedVehicle.model);
-    toggleManualFields(!decodedEnough);
-
-    setStatus(
-      vinStatus,
-      decodedEnough
-        ? 'VIN decoded. Confirm the details and finish the form below.'
-        : 'VIN captured. We could not decode everything, so enter make and model manually below.',
-      decodedEnough ? 'success' : 'error'
-    );
-
-    vehicleCard.classList.remove('is-hidden');
-    leadCard.classList.remove('is-hidden');
-    leadCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } catch (error) {
-    decodedVehicle = null;
-    decodedMakeHidden.value = '';
-    decodedModelHidden.value = '';
-    decodedYearHidden.value = '';
-    decodedBodyHidden.value = '';
-    decodedTypeHidden.value = '';
-
-    renderSummary({});
-    toggleManualFields(true);
-    vehicleCard.classList.remove('is-hidden');
-    leadCard.classList.remove('is-hidden');
-
-    setStatus(
-      vinStatus,
-      `${error.message} You can still continue by entering the make and model manually.`,
-      'error'
-    );
-  } finally {
-    decodeBtn.disabled = false;
   }
-});
 
-leadForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
+  const mobileDigits = digitsOnly(payload.mobile);
+  if (mobileDigits.length < 10) {
+    return 'Please enter a valid mobile number.';
+  }
 
-  const formData = new FormData(leadForm);
-  const payload = Object.fromEntries(formData.entries());
+  const zipDigits = digitsOnly(payload.zip);
+  if (zipDigits.length < 5) {
+    return 'Please enter a valid ZIP code.';
+  }
 
-  payload.vin = normalizeVin(payload.vin || vinInput.value || '');
-  payload.pageUrl = window.location.href;
-  payload.userAgent = navigator.userAgent;
+  const milesDigits = digitsOnly(payload.miles);
+  if (!milesDigits.length) {
+    return 'Please enter the vehicle mileage.';
+  }
 
-  if (!payload.vin) {
-    setStatus(leadStatus, 'Add the VIN first.', 'error');
-    return;
+  const vehicleMake = String(payload.decodedMake || payload.manualMake || '').trim();
+  const vehicleModel = String(payload.decodedModel || payload.manualModel || '').trim();
+
+  if (!vehicleMake || !vehicleModel) {
+    return 'Please confirm the make and model of your vehicle.';
   }
 
   if (!payload.consent) {
-    setStatus(leadStatus, 'Please agree to be contacted so the buyer can follow up.', 'error');
-    return;
+    return 'Please confirm that we can contact you about your vehicle request.';
   }
 
-  submitBtn.disabled = true;
-  setStatus(leadStatus, 'Sending your request…');
+  return '';
+};
 
-  try {
-    const response = await fetch('/api/lead', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+if (vinInput) {
+  vinInput.addEventListener('input', () => {
+    const normalizedVin = normalizeVin(vinInput.value);
+    const vinChanged = normalizedVin !== vinHidden.value;
 
-    const result = await response.json();
+    vinInput.value = normalizedVin;
+    vinHidden.value = normalizedVin;
 
-    if (!response.ok) {
-      throw new Error(result.error || 'Something went wrong.');
+    if (vinChanged) {
+      resetDecodedState();
+      hideLeadFlow();
+      setStatus(vinStatus, '');
+    }
+  });
+}
+
+if (vinForm) {
+  vinForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const vin = normalizeVin(vinInput.value);
+    vinInput.value = vin;
+    vinHidden.value = vin;
+
+    resetDecodedState();
+
+    if (!isValidVin(vin)) {
+      setStatus(vinStatus, 'Enter a valid 17-character VIN. VINs do not use I, O, or Q.', 'error');
+      hideLeadFlow();
+      return;
     }
 
-    setStatus(
-      leadStatus,
-      'Thanks — your request is in. Check your email for confirmation. We can follow up by text or phone next.',
-      'success'
-    );
+    setButtonState(decodeBtn, true, 'Decoding…', DEFAULT_DECODE_LABEL);
+    setStatus(vinStatus, 'Looking up your vehicle…');
 
-    leadForm.reset();
-    vinInput.value = payload.vin;
-    vinHidden.value = payload.vin;
-    populateUtmFields();
-  } catch (error) {
-    setStatus(leadStatus, error.message || 'Something went wrong.', 'error');
-  } finally {
-    submitBtn.disabled = false;
-  }
-});
+    try {
+      const response = await fetch('/api/decode-vin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ vin }),
+      });
+
+      const result = await readJsonSafely(response);
+
+      if (!response.ok) {
+        throw new Error(result.error || 'We could not identify that VIN right now.');
+      }
+
+      decodedVehicle = result.vehicle || {};
+
+      decodedMakeHidden.value = decodedVehicle.make || '';
+      decodedModelHidden.value = decodedVehicle.model || '';
+      decodedYearHidden.value = decodedVehicle.modelYear || '';
+      decodedBodyHidden.value = decodedVehicle.bodyClass || '';
+      decodedTypeHidden.value = decodedVehicle.vehicleType || '';
+
+      renderSummary(decodedVehicle);
+
+      const decodedEnough = Boolean(decodedVehicle.make && decodedVehicle.model);
+      toggleManualFields(!decodedEnough);
+
+      setStatus(
+        vinStatus,
+        decodedEnough
+          ? 'We found your vehicle. Confirm the details below and continue.'
+          : 'We saved your VIN. If anything is missing, add the make and model below.',
+        decodedEnough ? 'success' : 'error'
+      );
+
+      vehicleCard.classList.remove('is-hidden');
+      leadCard.classList.remove('is-hidden');
+      leadCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (error) {
+      resetDecodedState();
+      renderSummary({});
+      toggleManualFields(true);
+      vehicleCard.classList.remove('is-hidden');
+      leadCard.classList.remove('is-hidden');
+
+      setStatus(
+        vinStatus,
+        `${error.message} You can still continue by entering the make and model manually.`,
+        'error'
+      );
+    } finally {
+      setButtonState(decodeBtn, false, 'Decoding…', DEFAULT_DECODE_LABEL);
+    }
+  });
+}
+
+if (leadForm) {
+  leadForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(leadForm);
+    const payload = Object.fromEntries(formData.entries());
+
+    payload.vin = normalizeVin(payload.vin || vinInput.value || '');
+    payload.pageUrl = window.location.href;
+    payload.userAgent = navigator.userAgent;
+
+    if (!payload.vin) {
+      setStatus(leadStatus, 'Please enter the VIN first.', 'error');
+      return;
+    }
+
+    const validationMessage = validateLeadPayload(payload);
+    if (validationMessage) {
+      setStatus(leadStatus, validationMessage, 'error');
+      return;
+    }
+
+    setButtonState(submitBtn, true, 'Submitting…', DEFAULT_SUBMIT_LABEL);
+    setStatus(leadStatus, 'Submitting your request…');
+
+    try {
+      const response = await fetch('/api/lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await readJsonSafely(response);
+
+      if (!response.ok) {
+        throw new Error(result.error || 'We could not submit your request right now.');
+      }
+
+      setStatus(
+        leadStatus,
+        'Thank you — your request has been submitted. Please check your email for confirmation. A follow-up may come by phone, text, or email.',
+        'success'
+      );
+
+      leadForm.reset();
+      vinInput.value = payload.vin;
+      vinHidden.value = payload.vin;
+      populateUtmFields();
+      toggleManualFields(!(decodedMakeHidden.value && decodedModelHidden.value));
+    } catch (error) {
+      setStatus(leadStatus, error.message || 'We could not submit your request right now.', 'error');
+    } finally {
+      setButtonState(submitBtn, false, 'Submitting…', DEFAULT_SUBMIT_LABEL);
+    }
+  });
+}
 
 populateUtmFields();
