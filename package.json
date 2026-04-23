@@ -1,0 +1,8 @@
+{
+  "name": "sellmyexoticfast-mvp",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "resend": "latest"
+  }
+}
