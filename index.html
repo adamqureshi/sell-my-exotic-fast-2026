@@ -6,210 +6,350 @@
     <title>Sell My Exotic Fast</title>
     <meta
       name="description"
-      content="Get started selling your exotic car in under a minute. Enter your VIN, confirm the vehicle details, and request an offer."
+      content="Sell your exotic car with a fast, discreet, luxury-focused offer request. Enter your VIN, confirm the details, and request an offer."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="page-shell">
-      <header class="topbar">
-        <a class="wordmark" href="/" aria-label="Sell My Exotic Fast home">
-          <span class="wordmark-line">SELL MY</span>
-          <span class="wordmark-line">EXOTIC FAST</span>
-        </a>
+    <main>
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="wordmark" href="/" aria-label="Sell My Exotic Fast home">
+            SELL MY EXOTIC FAST
+          </a>
+        </div>
       </header>
 
       <section class="hero">
-        <p class="eyebrow">Fast luxury & exotic car lead capture</p>
-        <h1>Get your exotic car offer request started in under 60 seconds.</h1>
-        <p class="hero-copy">
-          Enter the VIN first. We will decode the car details, ask for miles and
-          your contact info, then send your lead to your buyer partner.
-        </p>
+        <div class="container hero-inner">
+          <div class="hero-copy-wrap">
+            <p class="eyebrow">Luxury & exotic car offers</p>
+            <h1>Sell your exotic car with a fast, discreet offer request.</h1>
+            <p class="hero-copy">
+              Enter your VIN to get started. We’ll identify the vehicle, collect the
+              details that matter, and connect your request with a real buyer.
+            </p>
 
-        <div class="trust-row" aria-label="Highlights">
-          <span>VIN first</span>
-          <span>No fluff</span>
-          <span>Mobile-first</span>
-        </div>
-      </section>
-
-      <section class="card vin-card">
-        <div class="section-heading">
-          <p class="section-kicker">Step 1</p>
-          <h2>Enter VIN</h2>
-        </div>
-
-        <form id="vin-form" class="vin-form" novalidate>
-          <label class="field-label field-label--large" for="vin-input">
-            17-character VIN
-          </label>
-          <div class="vin-input-row">
-            <input
-              id="vin-input"
-              name="vin"
-              type="text"
-              inputmode="text"
-              autocomplete="off"
-              maxlength="17"
-              placeholder="Enter VIN"
-              class="vin-input"
-              aria-describedby="vin-help vin-status"
-              required
-            />
-            <button id="decode-btn" class="button button--primary" type="submit">
-              Decode VIN
-            </button>
-          </div>
-          <p id="vin-help" class="helper-text">
-            VIN decoding pulls manufacturer-assigned vehicle data. Miles are not
-            part of the VIN and are collected in the next step.
-          </p>
-          <p id="vin-status" class="status" aria-live="polite"></p>
-        </form>
-      </section>
-
-      <section id="vehicle-card" class="card vehicle-card is-hidden" aria-live="polite">
-        <div class="section-heading">
-          <p class="section-kicker">Decoded vehicle</p>
-          <h2>Confirm the basics</h2>
-        </div>
-
-        <div id="decode-summary" class="decode-summary"></div>
-        <p id="manual-note" class="helper-text is-hidden">
-          We could not fully decode this VIN. You can still continue by entering
-          the vehicle details manually.
-        </p>
-      </section>
-
-      <section id="lead-card" class="card lead-card is-hidden">
-        <div class="section-heading">
-          <p class="section-kicker">Step 2</p>
-          <h2>Tell us about the car</h2>
-        </div>
-
-        <form id="lead-form" class="lead-form" novalidate>
-          <input type="hidden" id="vin-hidden" name="vin" />
-          <input type="hidden" id="decoded-make-hidden" name="decodedMake" />
-          <input type="hidden" id="decoded-model-hidden" name="decodedModel" />
-          <input type="hidden" id="decoded-year-hidden" name="decodedYear" />
-          <input type="hidden" id="decoded-body-hidden" name="decodedBodyClass" />
-          <input type="hidden" id="decoded-type-hidden" name="decodedVehicleType" />
-          <input type="hidden" id="utm-source" name="utm_source" />
-          <input type="hidden" id="utm-medium" name="utm_medium" />
-          <input type="hidden" id="utm-campaign" name="utm_campaign" />
-          <input type="hidden" id="utm-term" name="utm_term" />
-          <input type="hidden" id="utm-content" name="utm_content" />
-
-          <div class="grid">
-            <div class="field">
-              <label for="full-name">Full name</label>
-              <input id="full-name" name="fullName" type="text" autocomplete="name" required />
-            </div>
-
-            <div class="field">
-              <label for="mobile">Mobile number</label>
-              <input
-                id="mobile"
-                name="mobile"
-                type="tel"
-                inputmode="tel"
-                autocomplete="tel"
-                placeholder="(555) 555-5555"
-                required
-              />
-            </div>
-
-            <div class="field">
-              <label for="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autocomplete="email"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-
-            <div class="field">
-              <label for="zip">ZIP code</label>
-              <input
-                id="zip"
-                name="zip"
-                type="text"
-                inputmode="numeric"
-                autocomplete="postal-code"
-                placeholder="90210"
-                required
-              />
-            </div>
-
-            <div class="field">
-              <label for="miles">Mileage</label>
-              <input
-                id="miles"
-                name="miles"
-                type="text"
-                inputmode="numeric"
-                placeholder="24500"
-                required
-              />
-            </div>
-
-            <div class="field field--full is-hidden" id="manual-make-wrap">
-              <label for="manual-make">Make</label>
-              <input id="manual-make" name="manualMake" type="text" placeholder="Ferrari" />
-            </div>
-
-            <div class="field field--full is-hidden" id="manual-model-wrap">
-              <label for="manual-model">Model</label>
-              <input id="manual-model" name="manualModel" type="text" placeholder="488 GTB" />
-            </div>
-
-            <div class="field field--full">
-              <label for="notes">Anything important about the car?</label>
-              <textarea
-                id="notes"
-                name="notes"
-                rows="4"
-                placeholder="Color, accident history, modifications, title status, payoff, condition, or timeline."
-              ></textarea>
+            <div class="hero-points">
+              <span>Luxury-focused</span>
+              <span>Fast response</span>
+              <span>Mobile-first</span>
             </div>
           </div>
 
-          <label class="consent-row">
-            <input id="consent" name="consent" type="checkbox" required />
-            <span>
-              I agree to be contacted about my vehicle inquiry by call, text, and
-              email. Message frequency varies. Reply STOP to opt out.
-            </span>
-          </label>
+          <section class="hero-form-card">
+            <div class="section-heading">
+              <p class="section-kicker">Step 1</p>
+              <h2>Start with your VIN</h2>
+              <p class="section-subcopy">
+                Enter your 17-character VIN and we’ll pull the basic vehicle details first.
+              </p>
+            </div>
 
-          <div class="field honeypot" aria-hidden="true">
-            <label for="website">Website</label>
-            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+            <form id="vin-form" class="vin-form" novalidate>
+              <label class="field-label field-label--large" for="vin-input">
+                VIN
+              </label>
+
+              <div class="vin-input-row">
+                <input
+                  id="vin-input"
+                  name="vin"
+                  type="text"
+                  inputmode="text"
+                  autocomplete="off"
+                  maxlength="17"
+                  placeholder="ENTER VIN"
+                  class="vin-input"
+                  aria-describedby="vin-help vin-status"
+                  required
+                />
+                <button id="decode-btn" class="button button--primary" type="submit">
+                  Continue
+                </button>
+              </div>
+
+              <p id="vin-help" class="helper-text">
+                We’ll identify the vehicle first. Mileage and contact details come next.
+              </p>
+              <p id="vin-status" class="status" aria-live="polite"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+
+      <section class="trust-strip">
+        <div class="container trust-strip-inner">
+          <div class="trust-item">
+            <strong>Fast</strong>
+            <span>Start your request in under a minute.</span>
+          </div>
+          <div class="trust-item">
+            <strong>Luxury-focused</strong>
+            <span>Built for exotic and high-end vehicles.</span>
+          </div>
+          <div class="trust-item">
+            <strong>Simple</strong>
+            <span>VIN first, then miles, ZIP, and contact info.</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="vehicle-card" class="section-block is-hidden" aria-live="polite">
+        <div class="container">
+          <div class="card">
+            <div class="section-heading">
+              <p class="section-kicker">Vehicle details</p>
+              <h2>Confirm your vehicle</h2>
+              <p class="section-subcopy">
+                Review the information we found from the VIN.
+              </p>
+            </div>
+
+            <div id="decode-summary" class="decode-summary"></div>
+
+            <p id="manual-note" class="helper-text is-hidden">
+              We could not fully identify the vehicle from the VIN. You can still continue
+              by entering the make and model manually below.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="lead-card" class="section-block is-hidden">
+        <div class="container">
+          <div class="card">
+            <div class="section-heading">
+              <p class="section-kicker">Step 2</p>
+              <h2>Tell us about your car</h2>
+              <p class="section-subcopy">
+                A few final details so we can send your request to a buyer.
+              </p>
+            </div>
+
+            <form id="lead-form" class="lead-form" novalidate>
+              <input type="hidden" id="vin-hidden" name="vin" />
+              <input type="hidden" id="decoded-make-hidden" name="decodedMake" />
+              <input type="hidden" id="decoded-model-hidden" name="decodedModel" />
+              <input type="hidden" id="decoded-year-hidden" name="decodedYear" />
+              <input type="hidden" id="decoded-body-hidden" name="decodedBodyClass" />
+              <input type="hidden" id="decoded-type-hidden" name="decodedVehicleType" />
+              <input type="hidden" id="utm-source" name="utm_source" />
+              <input type="hidden" id="utm-medium" name="utm_medium" />
+              <input type="hidden" id="utm-campaign" name="utm_campaign" />
+              <input type="hidden" id="utm-term" name="utm_term" />
+              <input type="hidden" id="utm-content" name="utm_content" />
+
+              <div class="grid">
+                <div class="field">
+                  <label for="full-name">Full name</label>
+                  <input id="full-name" name="fullName" type="text" autocomplete="name" required />
+                </div>
+
+                <div class="field">
+                  <label for="mobile">Mobile number</label>
+                  <input
+                    id="mobile"
+                    name="mobile"
+                    type="tel"
+                    inputmode="tel"
+                    autocomplete="tel"
+                    placeholder="(555) 555-5555"
+                    required
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="you@example.com"
+                    required
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="zip">ZIP code</label>
+                  <input
+                    id="zip"
+                    name="zip"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="postal-code"
+                    placeholder="90210"
+                    required
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="miles">Mileage</label>
+                  <input
+                    id="miles"
+                    name="miles"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="24500"
+                    required
+                  />
+                </div>
+
+                <div class="field field--full is-hidden" id="manual-make-wrap">
+                  <label for="manual-make">Make</label>
+                  <input id="manual-make" name="manualMake" type="text" placeholder="Ferrari" />
+                </div>
+
+                <div class="field field--full is-hidden" id="manual-model-wrap">
+                  <label for="manual-model">Model</label>
+                  <input id="manual-model" name="manualModel" type="text" placeholder="488 GTB" />
+                </div>
+
+                <div class="field field--full">
+                  <label for="notes">Anything important about the car?</label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    rows="4"
+                    placeholder="Color, condition, title status, accident history, modifications, payoff, or timing."
+                  ></textarea>
+                </div>
+              </div>
+
+              <label class="consent-row">
+                <input id="consent" name="consent" type="checkbox" required />
+                <span>
+                  I agree to be contacted by phone, text, and email regarding my vehicle
+                  request. Message frequency varies. Reply STOP to opt out.
+                </span>
+              </label>
+
+              <div class="field honeypot" aria-hidden="true">
+                <label for="website">Website</label>
+                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <button id="submit-btn" class="button button--primary button--block" type="submit">
+                Request my offer
+              </button>
+
+              <p id="lead-status" class="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="container">
+          <div class="section-heading section-heading--center">
+            <p class="section-kicker">Why owners use us</p>
+            <h2>A simpler way to start the selling process</h2>
           </div>
 
-          <button id="submit-btn" class="button button--primary button--block" type="submit">
-            Request my offer
-          </button>
-          <p id="lead-status" class="status" aria-live="polite"></p>
-        </form>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <h3>Luxury-focused</h3>
+              <p>
+                Built for exotic and premium vehicles, not a generic mass-market form.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <h3>Fast intake</h3>
+              <p>
+                Start with the VIN, confirm the basics, then send your request in minutes.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <h3>Real follow-up</h3>
+              <p>
+                Your request is reviewed and passed to a real buyer for direct follow-up.
+              </p>
+            </article>
+          </div>
+        </div>
       </section>
 
-      <section class="footer-note">
-        <p>
-          This MVP is built to capture qualified leads fast: VIN → decoded vehicle →
-          miles + ZIP + mobile → dealer handoff.
-        </p>
+      <section class="section-block section-block--alt">
+        <div class="container">
+          <div class="section-heading section-heading--center">
+            <p class="section-kicker">How it works</p>
+            <h2>Clear. Simple. Fast.</h2>
+          </div>
+
+          <div class="steps-grid">
+            <div class="step-card">
+              <span class="step-number">01</span>
+              <h3>Enter your VIN</h3>
+              <p>We identify the vehicle and pull the basics where possible.</p>
+            </div>
+            <div class="step-card">
+              <span class="step-number">02</span>
+              <h3>Add your details</h3>
+              <p>Tell us your mileage, ZIP, and how to reach you.</p>
+            </div>
+            <div class="step-card">
+              <span class="step-number">03</span>
+              <h3>Get contacted</h3>
+              <p>A buyer reviews the request and follows up with you directly.</p>
+            </div>
+          </div>
+        </div>
       </section>
+
+      <section class="section-block">
+        <div class="container">
+          <div class="section-heading section-heading--center">
+            <p class="section-kicker">FAQ</p>
+            <h2>Common questions</h2>
+          </div>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <h3>How long does it take?</h3>
+              <p>
+                Most owners can complete the request in under a minute once they have the VIN.
+              </p>
+            </div>
+
+            <div class="faq-item">
+              <h3>What do I need to submit?</h3>
+              <p>
+                Your VIN, mileage, ZIP code, and your contact information are the key basics.
+              </p>
+            </div>
+
+            <div class="faq-item">
+              <h3>Do I need to know all the vehicle details first?</h3>
+              <p>
+                No. We start with the VIN to make the process easier and faster.
+              </p>
+            </div>
+
+            <div class="faq-item">
+              <h3>Will someone contact me after I submit?</h3>
+              <p>
+                Yes. Once your request is submitted, a buyer can follow up by phone, text, or email.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>Sell My Exotic Fast</p>
+          <p>Fast, discreet luxury car offer requests.</p>
+        </div>
+      </footer>
     </main>
 
     <script src="./app.js" defer></script>
