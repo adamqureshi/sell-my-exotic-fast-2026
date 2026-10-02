@@ -1,357 +1,94 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sell My Exotic Fast</title>
-    <meta
-      name="description"
-      content="Sell your exotic car with a fast, discreet, luxury-focused offer request. Enter your VIN, confirm the details, and request an offer."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <main>
-      <header class="site-header">
-        <div class="container header-inner">
-          <a class="wordmark" href="/" aria-label="Sell My Exotic Fast home">
-            SELL MY EXOTIC FAST
-          </a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Assistant for Exotic Car Dealers | Sell My Exotic Fast</title>
+  <meta name="description" content="An AI assistant for your exotic car dealership. Answer inventory questions, capture buyers, and follow up by SMS. Installed on your website. $500 setup + $500/month." />
+  <meta name="theme-color" content="#101112" />
+  <meta property="og:title" content="AI Assistant for Exotic Car Dealers | Sell My Exotic Fast" />
+  <meta property="og:description" content="Your inventory. Your website. An AI assistant that keeps the conversation moving. $500 setup + $500/month." />
+  <meta property="og:type" content="website" />
+  <link rel="canonical" href="https://www.sellmyexoticfast.com/" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23101112'/%3E%3Cpath d='M9 9h14v4H13v3h8v4h-8v3H9z' fill='white'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=dealer-ai-1" />
+  <script src="/app.js?v=dealer-ai-1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="wordmark" href="/" aria-label="Sell My Exotic Fast home">SELL MY<br>EXOTIC FAST<span class="brand-tag">DEALER AI</span></a>
+      <a class="header-cta" href="#contact">Let’s talk</a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy-wrap">
+          <p class="eyebrow">AI ASSISTANT FOR EXOTIC CAR DEALERS</p>
+          <h1 id="hero-title">Your showroom<br>closes.<br><span>Your website<br>shouldn’t.</span></h1>
+          <p class="hero-copy">Turn more website conversations into sales opportunities. We connect your inventory and install an AI assistant on your existing website—ready to answer questions, capture buyers, and continue by text.</p>
+          <a class="button button--light" href="#contact">Get an AI assistant</a>
+          <p class="hero-price">$500 setup <span>+</span> $500/month</p>
         </div>
-      </header>
-
-      <section class="hero">
-        <div class="container hero-inner">
-          <div class="hero-copy-wrap">
-            <p class="eyebrow">Luxury & exotic car offers</p>
-            <h1>Sell your exotic car with a fast, discreet offer request.</h1>
-            <p class="hero-copy">
-              Enter your VIN to get started. We’ll identify the vehicle, collect the
-              details that matter, and connect your request with a real buyer.
-            </p>
-
-            <div class="hero-points">
-              <span>Luxury-focused</span>
-              <span>Fast response</span>
-              <span>Mobile-first</span>
-            </div>
+        <aside class="conversation" aria-label="Illustrative customer conversation, not a live chat">
+          <div class="conversation-top"><span class="assistant-mark" aria-hidden="true">AI</span><div><strong>Your dealership</strong><span>AI sales assistant</span></div><span class="example-label">EXAMPLE</span></div>
+          <div class="chat-body">
+            <p class="chat-time">AFTER HOURS. STILL IN THE CONVERSATION.</p>
+            <div class="bubble bubble--buyer">Does this 911 GT3 have the front-axle lift?</div>
+            <div class="bubble bubble--assistant">The listing includes front-axle lift. Would you like the full spec sheet or a closer look at the car?</div>
+            <div class="bubble bubble--buyer">A walkaround video. I’m in Miami.</div>
+            <div class="bubble bubble--assistant">I can pass your video request and shipping question to the sales team. What’s the best email to reach you?</div>
+            <div class="handoff"><span class="handoff-icon" aria-hidden="true">✓</span><div><strong>A useful lead for your team.</strong><p>The car. The question. The buyer’s next step.</p></div></div>
           </div>
-
-          <section class="hero-form-card">
-            <div class="section-heading">
-              <p class="section-kicker">Step 1</p>
-              <h2>Start with your VIN</h2>
-              <p class="section-subcopy">
-                Enter your 17-character VIN and we’ll pull the basic vehicle details first.
-              </p>
-            </div>
-
-            <form id="vin-form" class="vin-form" novalidate>
-              <label class="field-label field-label--large" for="vin-input">
-                VIN
-              </label>
-
-              <div class="vin-input-row">
-                <input
-                  id="vin-input"
-                  name="vin"
-                  type="text"
-                  inputmode="text"
-                  autocomplete="off"
-                  maxlength="17"
-                  placeholder="ENTER VIN"
-                  class="vin-input"
-                  aria-describedby="vin-help vin-status"
-                  required
-                />
-                <button id="decode-btn" class="button button--primary" type="submit">
-                  Continue
-                </button>
-              </div>
-
-              <p id="vin-help" class="helper-text">
-                We’ll identify the vehicle first. Mileage and contact details come next.
-              </p>
-              <p id="vin-status" class="status" aria-live="polite"></p>
-            </form>
-          </section>
-        </div>
-      </section>
-
-      <section class="trust-strip">
-        <div class="container trust-strip-inner">
-          <div class="trust-item">
-            <strong>Fast</strong>
-            <span>Start your request in under a minute.</span>
-          </div>
-          <div class="trust-item">
-            <strong>Luxury-focused</strong>
-            <span>Built for exotic and high-end vehicles.</span>
-          </div>
-          <div class="trust-item">
-            <strong>Simple</strong>
-            <span>VIN first, then miles, ZIP, and contact info.</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="vehicle-card" class="section-block is-hidden" aria-live="polite">
-        <div class="container">
-          <div class="card">
-            <div class="section-heading">
-              <p class="section-kicker">Vehicle details</p>
-              <h2>Confirm your vehicle</h2>
-              <p class="section-subcopy">
-                Review the information we found from the VIN.
-              </p>
-            </div>
-
-            <div id="decode-summary" class="decode-summary"></div>
-
-            <p id="manual-note" class="helper-text is-hidden">
-              We could not fully identify the vehicle from the VIN. You can still continue
-              by entering the make and model manually below.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="lead-card" class="section-block is-hidden">
-        <div class="container">
-          <div class="card">
-            <div class="section-heading">
-              <p class="section-kicker">Step 2</p>
-              <h2>Tell us about your car</h2>
-              <p class="section-subcopy">
-                A few final details so we can send your request to a buyer.
-              </p>
-            </div>
-
-            <form id="lead-form" class="lead-form" novalidate>
-              <input type="hidden" id="vin-hidden" name="vin" />
-              <input type="hidden" id="decoded-make-hidden" name="decodedMake" />
-              <input type="hidden" id="decoded-model-hidden" name="decodedModel" />
-              <input type="hidden" id="decoded-year-hidden" name="decodedYear" />
-              <input type="hidden" id="decoded-body-hidden" name="decodedBodyClass" />
-              <input type="hidden" id="decoded-type-hidden" name="decodedVehicleType" />
-              <input type="hidden" id="utm-source" name="utm_source" />
-              <input type="hidden" id="utm-medium" name="utm_medium" />
-              <input type="hidden" id="utm-campaign" name="utm_campaign" />
-              <input type="hidden" id="utm-term" name="utm_term" />
-              <input type="hidden" id="utm-content" name="utm_content" />
-
-              <div class="grid">
-                <div class="field">
-                  <label for="full-name">Full name</label>
-                  <input id="full-name" name="fullName" type="text" autocomplete="name" required />
-                </div>
-
-                <div class="field">
-                  <label for="mobile">Mobile number</label>
-                  <input
-                    id="mobile"
-                    name="mobile"
-                    type="tel"
-                    inputmode="tel"
-                    autocomplete="tel"
-                    placeholder="(555) 555-5555"
-                    required
-                  />
-                </div>
-
-                <div class="field">
-                  <label for="email">Email</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="you@example.com"
-                    required
-                  />
-                </div>
-
-                <div class="field">
-                  <label for="zip">ZIP code</label>
-                  <input
-                    id="zip"
-                    name="zip"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="postal-code"
-                    placeholder="90210"
-                    required
-                  />
-                </div>
-
-                <div class="field">
-                  <label for="miles">Mileage</label>
-                  <input
-                    id="miles"
-                    name="miles"
-                    type="text"
-                    inputmode="numeric"
-                    placeholder="24500"
-                    required
-                  />
-                </div>
-
-                <div class="field field--full is-hidden" id="manual-make-wrap">
-                  <label for="manual-make">Make</label>
-                  <input id="manual-make" name="manualMake" type="text" placeholder="Ferrari" />
-                </div>
-
-                <div class="field field--full is-hidden" id="manual-model-wrap">
-                  <label for="manual-model">Model</label>
-                  <input id="manual-model" name="manualModel" type="text" placeholder="488 GTB" />
-                </div>
-
-                <div class="field field--full">
-                  <label for="notes">Anything important about the car?</label>
-                  <textarea
-                    id="notes"
-                    name="notes"
-                    rows="4"
-                    placeholder="Color, condition, title status, accident history, modifications, payoff, or timing."
-                  ></textarea>
-                </div>
-              </div>
-
-              <label class="consent-row">
-                <input id="consent" name="consent" type="checkbox" required />
-                <span>
-                  I agree to be contacted by phone, text, and email regarding my vehicle
-                  request. Message frequency varies. Reply STOP to opt out.
-                </span>
-              </label>
-
-              <div class="field honeypot" aria-hidden="true">
-                <label for="website">Website</label>
-                <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
-              </div>
-
-              <button id="submit-btn" class="button button--primary button--block" type="submit">
-                Request my offer
-              </button>
-
-              <p id="lead-status" class="status" aria-live="polite"></p>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <section class="section-block">
-        <div class="container">
-          <div class="section-heading section-heading--center">
-            <p class="section-kicker">Why owners use us</p>
-            <h2>A simpler way to start the selling process</h2>
-          </div>
-
-          <div class="feature-grid">
-            <article class="feature-card">
-              <h3>Luxury-focused</h3>
-              <p>
-                Built for exotic and premium vehicles, not a generic mass-market form.
-              </p>
-            </article>
-
-            <article class="feature-card">
-              <h3>Fast intake</h3>
-              <p>
-                Start with the VIN, confirm the basics, then send your request in minutes.
-              </p>
-            </article>
-
-            <article class="feature-card">
-              <h3>Real follow-up</h3>
-              <p>
-                Your request is reviewed and passed to a real buyer for direct follow-up.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section-block section-block--alt">
-        <div class="container">
-          <div class="section-heading section-heading--center">
-            <p class="section-kicker">How it works</p>
-            <h2>Clear. Simple. Fast.</h2>
-          </div>
-
-          <div class="steps-grid">
-            <div class="step-card">
-              <span class="step-number">01</span>
-              <h3>Enter your VIN</h3>
-              <p>We identify the vehicle and pull the basics where possible.</p>
-            </div>
-            <div class="step-card">
-              <span class="step-number">02</span>
-              <h3>Add your details</h3>
-              <p>Tell us your mileage, ZIP, and how to reach you.</p>
-            </div>
-            <div class="step-card">
-              <span class="step-number">03</span>
-              <h3>Get contacted</h3>
-              <p>A buyer reviews the request and follows up with you directly.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section-block">
-        <div class="container">
-          <div class="section-heading section-heading--center">
-            <p class="section-kicker">FAQ</p>
-            <h2>Common questions</h2>
-          </div>
-
-          <div class="faq-list">
-            <div class="faq-item">
-              <h3>How long does it take?</h3>
-              <p>
-                Most owners can complete the request in under a minute once they have the VIN.
-              </p>
-            </div>
-
-            <div class="faq-item">
-              <h3>What do I need to submit?</h3>
-              <p>
-                Your VIN, mileage, ZIP code, and your contact information are the key basics.
-              </p>
-            </div>
-
-            <div class="faq-item">
-              <h3>Do I need to know all the vehicle details first?</h3>
-              <p>
-                No. We start with the VIN to make the process easier and faster.
-              </p>
-            </div>
-
-            <div class="faq-item">
-              <h3>Will someone contact me after I submit?</h3>
-              <p>
-                Yes. Once your request is submitted, a buyer can follow up by phone, text, or email.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer class="site-footer">
-        <div class="container footer-inner">
-          <p>Sell My Exotic Fast</p>
-          <p>Fast, discreet luxury car offer requests.</p>
-        </div>
-      </footer>
-    </main>
-
-    <script src="./app.js" defer></script>
-  </body>
+          <p class="example-note">Illustrative conversation. Answers use your approved vehicle information.</p>
+        </aside>
+      </div>
+    </section>
+    <section class="benefits container" aria-labelledby="benefits-title">
+      <div class="section-heading"><p class="eyebrow">BUILT AROUND YOUR DEALERSHIP</p><h2 id="benefits-title">The right answer.<br>The next step.</h2></div>
+      <div class="benefit-grid">
+        <article><span class="number">01 / INVENTORY</span><h3>Help buyers find their car.</h3><p>Answer questions about listed specs, mileage, options, and price. Share the right inventory link and capture requests for photos, videos, or a private viewing.</p></article>
+        <article><span class="number">02 / CUSTOMER SERVICE</span><h3>Handle the everyday questions.</h3><p>Hours, locations, your buying process, and shipping or trade-in inquiries. Give customers useful answers while your team focuses on the deal.</p></article>
+        <article><span class="number">03 / SMS</span><h3>Keep the conversation going.</h3><p>Let buyers continue by text when they opt in. Follow up on their questions and help your team reconnect after they leave your website.</p></article>
+        <article><span class="number">04 / HUMAN HANDOFF</span><h3>Send your team the context.</h3><p>Capture the vehicle, buyer’s needs, contact details, and requested next step. Questions that need your expertise come back to your team.</p></article>
+      </div>
+      <div class="accuracy-note"><strong>Your reputation comes first.</strong><p>The assistant works from your inventory and approved information. Unverified service history, condition, warranty, and availability go to your team for confirmation.</p></div>
+    </section>
+    <section class="setup-strip" aria-label="How setup works"><div class="container setup-inner"><h2>You send the website.<br>We handle the setup.</h2><p>We review your inventory, agree on what the assistant should do, and install it on your site. You approve the answers and handoff before it goes live.</p></div></section>
+    <section class="contact-section container" id="contact" aria-labelledby="contact-title">
+      <div class="offer">
+        <p class="eyebrow">LET’S TEST IT AT YOUR DEALERSHIP</p>
+        <h2 id="contact-title">One assistant.<br>Simple pricing.</h2>
+        <div class="price"><strong>$500</strong><span>/ month</span></div>
+        <p class="setup-price">+ $500 one-time setup</p>
+        <p class="offer-description">For one dealership website. Website chat, inventory connection, customer inquiries, SMS setup, and handoff to your sales team.</p>
+        <p class="price-note">SMS carrier and messaging usage fees are additional. We confirm those costs with you before activation.</p>
+        <div class="offer-footer"><strong>Your website stays yours.</strong><p>We add the assistant. You keep your existing site and sales process.</p></div>
+      </div>
+      <div class="form-panel">
+        <h3>Tell us about your dealership.</h3>
+        <p class="form-intro">Send your website and what you want the AI to handle. We’ll follow up by email.</p>
+        <form id="dealer-form">
+          <div class="field"><label for="dealership">Dealership name</label><input id="dealership" name="dealership" autocomplete="organization" maxlength="160" required /></div>
+          <div class="field"><label for="location">Dealership location</label><input id="location" name="location" placeholder="City, state / country" maxlength="160" required /></div>
+          <div class="field"><label for="website">Website</label><input id="website" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourdealership.com" maxlength="500" autocapitalize="none" spellcheck="false" required /></div>
+          <div class="field"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@yourdealership.com" required /></div>
+          <div class="field"><label for="needs">What do you need the AI to do?</label><textarea id="needs" name="needs" rows="3" maxlength="3000" placeholder="Answer inventory questions, follow up by text, arrange viewings…" required></textarea></div>
+          <div class="honeypot" aria-hidden="true"><label for="fax">Leave this field empty</label><input id="fax" name="fax" tabindex="-1" autocomplete="off" /></div>
+          <button class="button button--dark" id="submit-button" type="submit">Let’s talk</button>
+          <p class="form-note">We’ll use these details to respond to your inquiry. This form does not enroll you in marketing texts or start a paid subscription.</p>
+          <p class="status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+          <noscript><p>Please enable JavaScript to send this form, or email <a href="mailto:contact@onlyev.com">contact@onlyev.com</a>.</p></noscript>
+        </form>
+        <p class="email-link">Prefer email? <a href="mailto:contact@onlyev.com?subject=Exotic%20dealer%20AI%20assistant">contact@onlyev.com</a></p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><span>SELL MY EXOTIC FAST</span><p>AI assistants for exotic &amp; luxury car dealerships.</p></div></footer>
+</body>
 </html>
